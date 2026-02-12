@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day-YOU SINGLE</title>
+    <link rel="icon" href="" type="image/x-icon">
+    
+    <style>
+        :root {
+            --bg-color: #4a0404;
+            --bg-gradient: radial-gradient(circle at center, #881337, #2a0202);
+            --primary: #fb7185;
+            --accent: #e11d48;
+            --text-main: #fff1f2;
+            --cake-color: #fce7f3;
+            --icing-color: #fb7185;
+            --font-family: 'Georgia', 'Times New Roman', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: var(--font-family);
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-variant-numeric: lining-nums tabular-nums; 
+        }
+
+        .hidden { display: none !important; }
+        
+        .fade-in { opacity: 0; animation: fadeIn 1.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .fade-out { animation: fadeOut 1s ease forwards; }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+        /* Pop In Animation for the Reward Box */
+        .pop-in { opacity: 0; animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        /* BUTTON STYLES */
+        .next-button {
+            margin-top: 15px;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--accent);
+            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: var(--font-family);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 100;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .next-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px var(--primary);
+        }
+
+        /* --- STAGE & MESSAGES --- */
+        .message-container {
+            text-align: center;
+            z-index: 30;
+            max-width: 800px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: absolute; 
+        }
+        
+        /* GLASS BOX DESIGN (The Reward Box) */
+        .love-note {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: #fff1f2;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            
+            /* Glass Effect properties */
+            background: rgba(255, 192, 203, 0.15); /* Translucent pinkish */
+            backdrop-filter: blur(12px); 
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 192, 203, 0.3); 
+            border-radius: 20px; 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); 
+            
+            /* Layout */
+            padding: 30px; 
+            width: auto;
+            min-width: 320px;
+            max-width: 90%; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* FIXED: Changed from center to flex-start to prevent top text cutting */
+            justify-content: flex-start; 
+            
+            /* Scroll settings */
+            max-height: 60vh; 
+            overflow-y: auto; 
+        }
+
+        .reward-image {
+            width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+            animation: floatEmoji 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5));
+        }
+
+        @keyframes floatEmoji {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Custom Scrollbar Styling */
+        .love-note::-webkit-scrollbar { width: 8px; }
+        .love-note::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .love-note::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+
+        .big-love {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: bold;
+            text-shadow: 0 0 30px var(--accent);
+            margin-bottom: 30px;
+        }
+
+        /* --- CSS ART CAKE --- */
+        #cake-stage {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 50px;
+            transform: scale(1.4); 
+            transform-origin: bottom center;
+            transition: opacity 1s, transform 1s;
+        }
+        
+        .layer {
+            background: var(--cake-color);
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .layer::before {
+            content: '';
+            position: absolute;
+            top: -5px; left: -2px; right: -2px;
+            height: 15px;
+            background: var(--icing-color);
+            border-radius: 10px;
+            z-index: 2;
+        }
+
+        .layer-bottom { width: 250px; height: 80px; z-index: 1; }
+        .layer-middle { width: 200px; height: 80px; z-index: 2; bottom: -5px; }
+        .layer-top    { width: 150px; height: 80px; z-index: 3; bottom: -10px; }
+
+        .cake-text {
+            color: #881337;
+            font-weight: bold;
+            font-size: 1.2rem;
+            z-index: 5;
+            text-align: center;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+
+        .candle {
+            width: 12px; 
+            height: 40px;
+            background: repeating-linear-gradient(45deg, white, white 5px, #ff0000 5px, #ff0000 10px);
+            position: absolute;
+            bottom: 235px; 
+            left: 50%; transform: translateX(-50%);
+            z-index: 4;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .flame {
+            width: 14px; height: 20px;
+            background: orange;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -20px; left: -1px;
+            animation: flicker 0.5s infinite alternate;
+            box-shadow: 0 0 15px yellow;
+        }
+        @keyframes flicker { from { transform: scale(1); opacity: 1; } to { transform: scale(0.9); opacity: 0.8; } }
+
+        /* --- ANIMATION ELEMENTS --- */
+        #knife-container {
+            position: absolute;
+            top: 0; right: -150px; 
+            opacity: 0;
+            transition: opacity 1s;
+            z-index: 10;
+        }
+        .hand {
+            width: 70px; height: 70px;
+            background: #fca5a5;
+            border-radius: 50%;
+            position: absolute;
+            top: 40px; left: 0px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .knife {
+            width: 180px; height: 35px;
+            background: linear-gradient(to bottom, #f0f0f0, #b0b0b0);
+            border-radius: 0 0 50% 0;
+            transform: rotate(-45deg);
+            position: relative;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+        .knife-handle {
+            width: 60px; height: 25px;
+            background: #5c2828;
+            position: absolute;
+            left: -50px; top: 5px;
+            border-radius: 5px;
+        }
+
+        /* --- ANIMATIONS --- */
+        .cut-action {
+            animation: cutMove 4s ease-in-out forwards;
+        }
+        @keyframes cutMove {
+            0% { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+            30% { transform: translate(-80px, 80px) rotate(-10deg); } 
+            60% { transform: translate(-100px, 150px) rotate(-25deg); } 
+            100% { transform: translate(-100px, 50px) rotate(0deg); opacity: 0; } 
+        }
+
+        /* COUNTDOWN & YEAR STYLES */
+        .countdown-box {
+            text-align: center; padding: 3rem;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(10px);
+            border-radius: 30px; border: 1px solid rgba(255, 175, 200, 0.3);
+            box-shadow: 0 0 50px rgba(225, 29, 72, 0.3); z-index: 10;
+        }
+        .timer-display {
+            font-size: 3.5rem; font-weight: 700; margin-top: 20px;
+            color: var(--primary); text-shadow: 0 0 20px var(--accent);
+        }
+        #year-stage {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); text-align: center;
+            z-index: 20; width: 100%;
+        }
+        .year-text {
+            font-size: 8rem; font-weight: bold; color: white;
+            position: relative; display: inline-block;
+            text-shadow: 0 0 20px rgba(255,0,0,0.5); line-height: 1; 
+        }
+        .strike-line {
+            position: absolute; top: 55%; left: 0; width: 0%; height: 6px;
+            background-color: var(--accent); transition: width 0.5s ease-out;
+            transform: rotate(0deg); box-shadow: 0 0 10px var(--accent);
+        }
+        .year-text.struck .strike-line { width: 110%; left: -5%; }
+        .year-text.struck { color: #ff99aa; opacity: 0.5; }
+        
+        .digit-wrapper { display: inline-block; position: relative; height: 1em; overflow: hidden; vertical-align: bottom; }
+        .digit-column { display: flex; flex-direction: column; transition: transform 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .digit-column span { display: block; height: 1em; line-height: 1; display: flex; align-items: center; justify-content: center; }
+
+        #hearts-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+    </style>
+</head>
+<body>
+
+    <canvas id="hearts-canvas"></canvas>
+
+    <div id="view-countdown" class="countdown-box">
+        <h2 style="color: white; letter-spacing: 2px;">WAIT FOR IT...</h2>
+        <div class="timer-display" id="timer">00:00:00</div>
+    </div>
+
+    <div id="year-stage" class="hidden"></div>
+
+    <div id="final-message" class="message-container hidden">
+        <h1 class="big-love fade-in">Happy Valentine's Day <br> Still Single Edition 💀</h1>
+        <div class="love-note fade-in" style="animation-delay: 1s;">
+            Preparing Your Single Award... 🏆<br>
+            Scanning For Valentine... Not Found ❌<br>
+            Loading Your Relationship Status...<br>
+            System Check: 0 Boyfriends Detected🚫<br><br>
+            Another zero boyfriend performance😔<br>
+            Your consistency is scary🥶🔥
+        </div>
+        <button class="next-button fade-in" style="animation-delay: 2s;" onclick="showPoem()">
+            NEXT
+        </button>
+    </div>
+
+    <div id="poem-message" class="message-container hidden">
+        <div class="love-note">
+            তুমি একা ছিলে, 😌<br>
+এখনও একা আছো, 😭<br>
+সময় গেছে, ⏳<br>
+relationship আসেনি। 💀💔<br><br>
+
+Valentine's Day এ 🌹<br>
+তুমি শুধু reels দেখো, 📱<br>
+couple goals দেখে 👩‍❤️‍👨<br>
+phone ছুঁড়ে ফেলো। 🤦‍♀️📲<br><br>
+
+ফুল কেউ দেয় না, 🌸❌<br>
+chocolate কেউ আনে না, 🍫🚫<br>
+Delivery boy ছাড়া 🚚<br>
+কেউ দরজায় আসে না। 🚪😩<br><br>
+
+কিন্তু চিন্তা কোরো না, 😌<br>
+single থাকা একটা talent। 🎯<br>
+তুমি master level এ পৌঁছে গেছো। 🏆👑<br><br>
+
+এইটুকু জেনে রেখো 🤓<br>
+তোমার wifi, 📶<br>
+তোমার food, 🍕🍔<br>
+আর তোমার sleep 😴<br>
+সবসময় তোমার সাথে আছে। 🤝✨<br>
+
+        </div>
+        <button class="next-button" onclick="showCakeSurprise()">
+            TAP TO OPEN YOUR SURPRISE 🎂
+        </button>
+    </div>
+
+    <div id="cake-container" class="message-container hidden">
+        
+        <div id="cake-stage">
+            <div class="candle">
+                <div class="flame"></div>
+            </div>
+            <div class="layer layer-top">
+                <span class="cake-text">YOU</span>
+            </div>
+            <div class="layer layer-middle">
+                <span class="cake-text">ARE</span>
+            </div>
+            <div class="layer layer-bottom">
+                <span class="cake-text">SINGLE</span>
+            </div>
+        </div>
+
+        <div id="knife-container">
+            <div class="knife">
+                <div class="knife-handle"></div>
+            </div>
+            <div class="hand"></div>
+        </div>
+
+        <div id="reward-box" class="love-note hidden">
+            <img src="/home/rishav/Downloads/Lv-main/dino.png" class="reward-image">
+            <div>
+                Radhe Radhe BOSS<br>
+                Happy Single Life ❤️
+            </div>
+            <button class="next-button" style="margin-top: 25px;" onclick="sendWhatsapp()">
+                GIVE ME GALI🤬
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- CANVAS & FIREWORKS ---
+        const canvas = document.getElementById('hearts-canvas');
+        const ctx = canvas.getContext('2d');
+        let hearts = [];
+        let particles = [];
+        let animationId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function random(min, max) { return Math.random() * (max - min) + min; }
+
+        class Heart {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -50;
+                this.size = Math.random() * 15 + 10;
+                this.speed = Math.random() * 0.8 + 0.5; 
+                this.opacity = Math.random() * 0.5 + 0.3;
+                this.color = `rgba(255, ${Math.floor(random(100, 200))}, ${Math.floor(random(100, 200))}, ${this.opacity})`;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height + 50) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                let topCurveHeight = this.size * 0.3;
+                ctx.moveTo(this.x, this.y + topCurveHeight);
+                ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
+                ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + (this.size + topCurveHeight) / 2 + topCurveHeight, this.x, this.y + this.size);
+                ctx.bezierCurveTo(this.x, this.y + (this.size + topCurveHeight) / 2 + topCurveHeight, this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight);
+                ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight);
+                ctx.fill();
+            }
+        }
+
+        // Firework Particle Class (SLOWER & LONGER)
+        class Particle {
+            constructor(x, y) {
+                this.x = x; 
+                this.y = y;
+                this.angle = random(0, Math.PI * 2);
+                this.speed = random(2, 6); // Slower
+                this.friction = 0.98; 
+                this.gravity = 0.2; 
+                this.hue = random(330, 380) % 360; 
+                this.saturation = 100;
+                this.lightness = random(50, 80);
+                this.alpha = 1;
+                this.decay = random(0.007, 0.015); // Longer life
+                this.size = random(2, 4);
+            }
+            update(index) {
+                this.speed *= this.friction;
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed + this.gravity;
+                this.alpha -= this.decay;
+                if (this.alpha <= 0) particles.splice(index, 1);
+            }
+            draw() {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = `hsl(${this.hue}, ${this.saturation}%, ${this.lightness}%)`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        function createExplosion(x, y) {
+            let count = 80;
+            while (count--) particles.push(new Particle(x, y));
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.fillStyle = 'rgba(74, 4, 4, 0.2)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            hearts.forEach(h => { h.update(); h.draw(); });
+
+            let i = particles.length;
+            while(i--) {
+                particles[i].draw();
+                particles[i].update(i);
+            }
+
+            if (random(0, 1) < 0.05) {
+                createExplosion(random(50, canvas.width - 50), random(50, canvas.height / 2));
+            }
+        }
+
+        function startVisuals() {
+            for (let i = 0; i < 40; i++) hearts.push(new Heart());
+            animate();
+        }
+
+        // --- 2. LOGIC & SEQUENCING ---
+        const DEV_MODE = true; 
+        const targetDate = new Date(`February 14, 2026 00:00:00`).getTime();
+        let timerInterval;
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0 || DEV_MODE) {
+                clearInterval(timerInterval);
+                startAnimationSequence();
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById("timer").innerHTML = 
+                    (days > 0 ? days + "d " : "") + 
+                    hours.toString().padStart(2, '0') + ":" + 
+                    minutes.toString().padStart(2, '0') + ":" + 
+                    seconds.toString().padStart(2, '0');
+            }
+        }
+
+        async function startAnimationSequence() {
+            const cd = document.getElementById('view-countdown');
+            cd.classList.add('fade-out');
+            setTimeout(() => cd.classList.add('hidden'), 1000);
+            startVisuals();
+
+            const stage = document.getElementById('year-stage');
+            stage.classList.remove('hidden');
+            const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+            const years = [2021, 2022, 2023, 2024]; 
+
+            for (let year of years) {
+                stage.innerHTML = `<div class="year-text fade-in">${year}<div class="strike-line"></div></div>`;
+                await wait(1500);
+                stage.querySelector('.year-text').classList.add('struck');
+                await wait(800);
+                stage.querySelector('.year-text').classList.add('fade-out');
+                await wait(800);
+            }
+
+            stage.innerHTML = `
+                <div class="year-text fade-in" style="display:flex; justify-content:center; align-items: baseline;">
+                    <span>202</span>
+                    <div class="digit-wrapper">
+                        <div class="digit-column" id="digit-col">
+                            <span>5</span>
+                            <span>6</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            await wait(2000);
+            document.getElementById('digit-col').style.transform = "translateY(-50%)"; 
+            await wait(3000);
+            
+            stage.querySelector('.year-text').classList.add('fade-out');
+            await wait(1000);
+            stage.classList.add('hidden');
+            document.getElementById('final-message').classList.remove('hidden');
+        }
+
+        function showPoem() {
+            const msg1 = document.getElementById('final-message');
+            const msg2 = document.getElementById('poem-message');
+            msg1.classList.add('fade-out');
+            setTimeout(() => {
+                msg1.classList.add('hidden'); 
+                msg2.classList.remove('hidden');
+                msg2.classList.add('fade-in');
+            }, 1000);
+        }
+
+        function showCakeSurprise() {
+            const poem = document.getElementById('poem-message');
+            const cakeContainer = document.getElementById('cake-container');
+            const cakeStage = document.getElementById('cake-stage');
+            const knife = document.getElementById('knife-container');
+            const rewardBox = document.getElementById('reward-box');
+
+            // 1. Hide Poem, Show Cake Stage
+            poem.classList.add('fade-out');
+            setTimeout(() => {
+                poem.classList.add('hidden');
+                cakeContainer.classList.remove('hidden');
+                cakeContainer.classList.add('fade-in');
+                
+                // 2. Wait 2 seconds before knife appears
+                setTimeout(() => {
+                    knife.style.opacity = '1';
+                    
+                    // 3. Start Slow Cut
+                    knife.classList.add('cut-action');
+                    
+                    // 4. Wait for cut to finish
+                    setTimeout(() => {
+                        // 5. Hide Cake & Knife
+                        cakeStage.style.opacity = '0';
+                        knife.style.opacity = '0';
+                        
+                        setTimeout(() => {
+                            cakeStage.classList.add('hidden');
+                            knife.classList.add('hidden');
+                            
+                            // 6. Show Reward Box
+                            rewardBox.classList.remove('hidden');
+                            rewardBox.classList.add('pop-in');
+                            
+                            // Extra Celebration
+                            for(let i=0; i<15; i++) {
+                                setTimeout(() => {
+                                    createExplosion(random(100, window.innerWidth-100), random(100, window.innerHeight/2));
+                                }, i*300);
+                            }
+                        }, 500);
+
+                    }, 3500); 
+
+                }, 2000); 
+
+            }, 1000);
+        }
+
+        // --- WHATSAPP FUNCTION ---
+        function sendWhatsapp() {
+            const number = "919734687196";
+            const message = "Fuck You!🖕🏻🖕🏻";
+            const url = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+    </script>
+</body>
+</html>
